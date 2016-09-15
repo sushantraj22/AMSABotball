@@ -1,0 +1,114 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf460
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 #include <kipr/botball.h>\
+//last edited 4/9/16\
+\
+//function declaration \
+void moveForward(double distance, int speed, double wheelDiameter, double friction);\
+void moveBackward(double distance, int speed, double wheelDiameter, double friction);\
+void moveUpRamp(double distance, int speed, double wheelDiameter, double friction);\
+void moveDownRamp(double distance, int speed, double wheelDiameter, double friction);\
+void turnLeft90();\
+void turnLeft90Ramp();\
+void turnRight90();\
+void turnRight180();\
+void turnLeft180();\
+\
+//constants\
+#define LEFT_WHEEL 2\
+#define RIGHT_WHEEL 1 \
+\
+// facing forward when robot front = antenna\
+\
+/** written by Christine on 3/31/16 based off of "Wallaby basic movement"**/\
+\
+int main()\{\
+  \
+	//wait_for_light(0);\
+    //shut_down_in(115);\
+  \
+    moveForward(11.0, 1000, 3.0, 1.0);\
+    turnRight90();\
+    moveForward(24.0, 1000, 3.0, 1.0);\
+    turnRight90();\
+    moveBackward(10.0, 1000, 3.0, 1.0);\
+    moveUpRamp(66.5, 800, 3.0, 1.0);\
+    moveForward(3.0, 1000, 3.0, 1.0);\
+	turnLeft90Ramp();\
+    moveBackward(15.0, 500, 3.0, 1.0);\
+    //backing up\
+    moveForward(12.0, 500, 3.0, 1.0); //12 originally\
+    enable_servos();\
+    set_servo_position(0,1644);\
+    msleep(1000);\
+    ao();\
+    msleep(500);\
+    moveBackward(1.0, 500, 3.0, 1.0); //to show off :) \
+    \
+    //bonus work to go to other side's ramp\
+    /*turnLeft90();\
+    moveDownRamp(20.0, 400, 3.0, 1.0);*/\
+    return 0;\
+\
+\}\
+\
+void moveForward(double distance, int speed, double wheelDiameter, double friction)\{\
+  	double ticks = abs(1000*1000*(distance*49/48)*friction/(3.141592653589793238*wheelDiameter*speed) );\
+  	printf("ticks = %f \\ndistance = %f \\nspeed = %d \\nwheel diameter = %f", ticks, distance, speed, wheelDiameter);\
+  	mav(RIGHT_WHEEL, speed);\
+  	mav(LEFT_WHEEL, speed);\
+  	msleep(ticks);	\
+\}\
+void moveBackward(double distance, int speed, double wheelDiameter, double friction)\{\
+  	double ticks = abs(1000*1000*(distance*49/48)*friction/(3.141592653589793238*wheelDiameter*speed) );\
+  	printf("ticks = %f \\ndistance = %f \\nspeed = %d \\nwheel diameter = %f", ticks, distance, speed, wheelDiameter);\
+  	mav(RIGHT_WHEEL, -speed);\
+  	mav(LEFT_WHEEL, -speed);\
+  	msleep(ticks);	\
+\}\
+void moveUpRamp(double distance, int speed, double wheelDiameter, double friction)\{\
+	double ticks = abs(1000*1000*(distance*49/48)*friction/(3.141592653589793238*wheelDiameter*speed) );\
+  	printf("ticks = %f \\ndistance = %f \\nspeed = %d \\nwheel diameter = %f", ticks, distance, speed, wheelDiameter);\
+  	mav(RIGHT_WHEEL, -speed-600);\
+  	mav(LEFT_WHEEL, -speed);\
+  	//msleep(ticks);	\
+    wait_for_touch(0);\
+\}\
+void moveDownRamp(double distance, int speed, double wheelDiameter, double friction)\{\
+    double ticks = abs(1000*1000*(distance*49/48)*friction/(3.141592653589793238*wheelDiameter*speed) );\
+  	printf("ticks = %f \\ndistance = %f \\nspeed = %d \\nwheel diameter = %f", ticks, distance, speed, wheelDiameter);\
+  	mav(RIGHT_WHEEL, -speed-200);\
+  	mav(LEFT_WHEEL, -speed);\
+  	msleep(ticks);	\
+\}\
+void turnRight90()\{\
+	mav(RIGHT_WHEEL, 750);\
+	mav(LEFT_WHEEL, -750);\
+	msleep(1150); //1125\
+\}\
+\
+void turnRight180()\{\
+	mav(RIGHT_WHEEL, -750);\
+    mav(LEFT_WHEEL, 750);\
+	msleep(2025);\
+\}\
+\
+void turnLeft90()\{\
+	mav(RIGHT_WHEEL, -750);\
+ 	mav(LEFT_WHEEL, 750);\
+  	msleep(1350); //1125\
+\}\
+void turnLeft90Ramp()\{\
+	mav(RIGHT_WHEEL, -750);\
+ 	mav(LEFT_WHEEL, 750);\
+  	msleep(1350);\
+\}\
+void turnLeft180()\{\
+	mav(RIGHT_WHEEL, 750);\
+ 	mav(LEFT_WHEEL, -750);\
+  	msleep(1975);\
+\}}

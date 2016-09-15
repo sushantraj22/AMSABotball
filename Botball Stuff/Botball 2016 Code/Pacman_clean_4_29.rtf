@@ -1,0 +1,158 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf460
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 #include <kipr/botball.h>\
+//sushi's code\
+// Created on Fri Feb 20 and tested\
+//based off of create_movement on 4/9/26\
+\
+void turnRight(double angle);\
+void turnLeft(double angle);\
+void moveForward(float distance, int speed); // create moves in cetimeters and cetimeters per second\
+void moveBackward(float distance, int speed);\
+\
+/*Pseudo\
+  1. turn right until straight (use jig)\
+  2. lift arm so it will not drag on ground\
+  3. go forward until near divider\
+  3. open hand\
+  4. turn left\
+  4. drop arm\
+  5. move forward\
+  6.(into range of pom pom)\
+  7. close hand\
+  8. lift arm so it will not drag on ground\
+  9. turn right to straight\
+  10. turn right 180\
+  11. go backwards until the hook is near potato bin\
+  12. turn left 20\
+  13. move backwards until potato bin has been hooked\
+  14. move forward a smidgen.\
+  15. Turn right 20.\
+  16. move forward until potato bin is not under board\
+  17. drop pom poms into bin\
+  18. drive forward into starting box\
+  19. Proceed to drop micheal on the board\
+  20. Mike should be yelling, FEAR ME PUNY NERDS\
+  */\
+\
+int main()\{\
+\
+  create_connect();\
+  //wait_for_light(0);\
+  //shut_down_in(115);\
+  //msleep(12000);\
+\
+  //code goes here \
+  moveBackward(15, 90);\
+  moveForward(6, 100);\
+  turnRight(182);\
+  enable_servos();\
+  set_servo_position(1,1100);\
+  set_servo_position(0,964);//open hand\
+  moveBackward(88, 100);\
+  disable_servos();\
+  moveBackward(80,100);\
+  enable_servos();\
+  set_servo_position(1,1600);\
+  msleep(500);\
+  set_servo_position(0, 50);\
+  msleep(800);\
+  set_servo_position(1,1259);\
+  msleep(500);\
+  turnLeft(225);  \
+  moveForward(45, 100);\
+  //while(get_create_lbump()!=1 || get_create_rbump()!=1)\{\
+  //	create_drive_direct(75,75);\
+  // \}\
+  create_stop();\
+  moveBackward(37, 100);\
+  set_servo_position(1, 0);\
+  msleep(1500);\
+  set_servo_position(0,700);\
+  msleep(2000);\
+  turnRight(76);\
+  set_servo_position(0,964);\
+  msleep(300);\
+  moveBackward(20,100);\
+  moveForward(14,100);\
+  disable_servos();\
+  msleep(1000);\
+  enable_servos();\
+  set_servo_position(1,1600);\
+  msleep(1000);\
+  set_servo_position(0, 100);\
+  msleep(1000);\
+  set_servo_position(1, 0);\
+  msleep(1500);\
+  set_servo_position(0, 500);\
+  msleep(1000);\
+  disable_servos();\
+  moveBackward(20,100);\
+  turnLeft(50);\
+  moveBackward(70,100);\
+  turnRight(45);\
+  turnLeft(42);\
+  moveBackward(63,100);\
+  create_disconnect();\
+  return 0;\
+\}\
+//How much the create turns is directly proportional to the multiplier in the if statement\
+void turnRight(double angle)\{\
+  set_create_total_angle(0);\
+  while(1)\{\
+    if(get_create_total_angle()>-angle*0.58)\{\
+      //old multiplier: 0.52, 0.56 (4/27)\
+      create_drive_direct(50,-50);\
+      msleep(1);\
+    \}\
+    else\{\
+      break;\
+    \}\
+    msleep(10);\
+    printf("angle : %d\\n", get_create_total_angle());\
+  \}\
+  create_drive_direct(0,0);\
+\}\
+\
+\
+\
+void turnLeft(double angle)\{\
+  set_create_total_angle(0);\
+  while(1)\{\
+    if(get_create_total_angle()<angle*.56)\{\
+      //old multiplier: 0.52\
+\
+      create_drive_direct(-50,50);\
+      msleep(1);\
+    \}\
+    else\{\
+      break;\
+    \}\
+    msleep(10);\
+    printf("angle : %d\\n", get_create_total_angle());\
+  \}\
+  create_drive_direct(0,0);\
+\
+\}\
+\
+void moveForward(float distance, int speed)\{\
+  //The distance multiplier works accurately at 100 speed\
+  distance *= 8.3;\
+  int time = (int)(1000*distance/speed);\
+  create_drive_direct(speed,speed);\
+  msleep(time);\
+  create_stop();\
+\}\
+//The distance multiplier works accurately at 100 speed\
+void moveBackward(float distance, int speed)\{\
+  distance *= 8.3;\
+  int time = (int)(1000*distance/speed);\
+  create_drive_direct(-speed,-speed);\
+  msleep(time);\
+  create_stop();\
+\}\
+}
