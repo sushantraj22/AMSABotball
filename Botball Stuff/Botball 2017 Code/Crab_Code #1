@@ -1,0 +1,49 @@
+/*Authors: Patrick Tan and Chris Walsh
+BOTBALL 2017 "PSEUDOCODE"
+not really pseudocode, more like trial and error thing
+*/
+
+//main method, what else do you think this is
+int main(){
+	create_connect();
+	//call any method here.
+	create_disconnect();
+	return 0;
+}
+//distance must be in millimeters
+
+
+//this method goes forward. Using position/ticks
+void forward(int distance)
+{
+	create_drive_direct(500, 500); //millimeters per second
+	msleep((distance/500)*1000);
+	create_stop();
+
+	return;
+}
+//goes backwards
+void backward(int distance)
+{
+	create_drive_direct(-500, -500); //millimeters per second
+	msleep((distance/500)*1000);
+	create_stop();
+
+	return;
+}
+//makes it turn itself right
+//left is positive, right is negative
+void turnRight(int degrees){
+	while(get_create_totalAngle() > -1*degrees){
+		create_drive_direct(500, -500);
+		msleep(50);
+	}
+
+}
+//turns itself left
+void turnLeft(int degrees){
+	while(get_create_totalAngle() < degrees){
+		create_drive_direct(-500, 500);
+		msleep(50);
+	}
+}
