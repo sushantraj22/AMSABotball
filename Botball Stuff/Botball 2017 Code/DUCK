@@ -1,0 +1,187 @@
+/* 
+Welcome to the Duck Team's Code!
+Authors: Matt Saunders and Alex Hernandez
+pseudocode (just to have)
+move to crank 
+grab and twist crank
+grab the fertilizer 
+move to terrace
+drop pom-poms
+grab all of the pom-poms, including pink ones
+drop poms into lower planter
+move robot to blue cow
+grab blue cow
+grab the seeds
+drop poms into lower planter
+end robot on terrace
+important notes
+there are ~1400 ticks per revolution 
+*/
+
+#include <kipr/botball.h>
+//void moveForward(double distance, int speed, double wheelDiameter, double friction);
+//void moveBackward(double distance, int speed, double wheelDiameter, double friction);
+//void turnRight(90);
+//void slideMoveUp();
+
+/*
+int go_to_crank(0,);
+int twist_crank(0,);
+int grab_fertilizer(0,);
+int move_to_terrace_from_crank(0,);
+int dispense_poms_into_terrace(0,);
+int go_to_ramp(0,);
+int grab_ramp_poms(0,);
+int dispense_poms_into_lower_planter(0,);
+int move_from_ramp_to_cow(0,);
+int grab_cow(0,);
+int move_to_terrace_from_cow(0,);
+int dispense_cow(0,);
+int grab_seeds_and_dispense_into_lower_planter(0,);
+int go_to_beginning(0,);
+*/
+
+/*
+void moveForward(double distance, int speed, double wheelDiameter, double friction) {
+    double ticks = abs(1000000*(distance*49/48)*friction/(3.141592653589793928*wheelDiameter*speed));
+    printf("ticks = %f / distance = %f / speed = %d / wheel diameter = %f", ticks, distance, speed, wheelDiameter);
+    mav(RIGHT_WHEEL, speed);
+    mav(LEFT_WHEEL, speed);
+    msleep(ticks);
+}
+
+void moveBackward(double distance, int speed, double wheelDiameter, double friction) {
+    double ticks = abs(1000000*(distance*49/48)*friction/(3.141592653589793928*wheelDiameter*speed));
+    printf("ticks = %f / distance = %f / speed = %d / wheel diameter = %f", ticks, distance, speed, wheelDiameter);
+    mav(RIGHT_WHEEL, -speed);
+    mav(LEFT_WHEEL, -speed);
+    msleep(ticks);
+}
+*/
+
+void turnLeft(double angle) {
+    mav(0, -750);
+    msleep(angle); // find a formula for the angle
+}
+
+/*
+void turnRight(double angle) {
+    mav(RIGHT_WHEEL, 750);
+    mav(LEFT_WHEEL, -750);
+    msleep(angle); // find a formula for the angle
+}
+
+int go_to_crank(int portNumber, double percentPower) {
+	printf("Going to the crank!");
+	motor(portNumber, percentPower);
+	motor(portNumber, percentPower);
+	//if a turn is needed, one should be more powerful than the other
+	//add more functions if needed
+	return 0;
+}
+int twist_crank(int portNumber, int position) {
+	printf("Twisting the crank!");
+	enable_servos();
+	set_servo_position(portNumber,position);
+	//under assumption that position of the claw relies on a servo 
+	set_servo_position(portNumber,position);
+	//under assumption that opening/closing of the claw relies on a servo
+	return 0;
+}
+int grab_fertilizer(int portNumber, int position) {
+	printf("Grabbing the fertilizer!");
+	set_servo_position(portNumber,position);
+	//under assumption that opening/closing of the claw relies on a servo
+	return 0;
+}
+int move_to_terrace_from_crank(int portNumber, double percentPower) {
+	printf("Going to the terrace!");
+	motor(portNumber, percentPower);
+	motor(portNumber, percentPower);
+	//if a turn is needed, one should be more powerful than the other
+	//add more functions if needed
+}
+int dispense_poms_into_terrace(int portNumber, int position) {
+	printf("Dropping off poms!");
+	set_servo_position(portNumber, position);
+	//should be what it was before grabbing poms
+	return 0;
+}
+int go_to_ramp(int portNumber, double percentPower) {	
+	printf("Going to the ramp!");
+	motor(portNumber, percentPower);
+	motor(portNumber, percentPower);
+	//if a turn is needed, one should be more powerful than the other
+	//add more functions if needed
+	return 0;
+}
+int grab_ramp_poms(int portNumber, int position) {
+	printf("Grabbing the ramp poms!");
+	set_servo_position(portNumber,position);
+	return 0;
+}
+int dispense_poms_into_lower_planter(int portNumber, int position) {
+	printf("Putting ramp poms into the lower planter!");
+	set_servo_position(portNumber, position); //position claw
+	set_servo_position(portNumber, position); //open claw and drop poms
+	//should be in original (open) position	
+    return 0;
+}
+int move_from_ramp_to_cow(int portNumber, double percentPower) {
+	printf("Moving to the cow!");
+	motor(portNumber, percentPower);
+	motor(portNumber, percentPower);
+	//if a turn is needed, one should be more powerful than the other
+	//add more functions if needed	
+	return 0;
+}
+int grab_cow(int portNumber, int position) {
+	printf("Grabbin' that cow!");
+	set_servo_position(portNumber,position); //close claw on cow
+	return 0; 
+}
+int move_to_terrace_from_cow (int portNumber, double percentPower) {
+	printf("Going back to the terrace!");
+	motor(portNumber, percentPower);
+	motor(portNumber, percentPower);
+	//if a turn is needed, one should be more powerful than the other
+	//add more functions if needed
+	return 0;
+}
+int dispense_cow(int portNumber, int position) {
+	printf("Dropping off the cow!");
+	set_servo_position(portNumber,position); //open claw, dropping cow
+	return 0;
+}
+int grab_and_dispense_seeds(int portNumber, int position, double percentPower) {
+	printf("Getting the seeds!");
+	motor(portNumber, percentPower);
+	motor(portNumber, percentPower);
+	//if a turn is needed, one should be more powerful than the other
+	//add more functions if needed
+	printf("Going to the lower planter!");
+	motor(portNumber, percentPower);
+	motor(portNumber, percentPower);
+	//if a turn is needed, one should be more powerful than the other
+	//add more functions if needed
+	printf("Dropping off poms!");
+	set_servo_position(portNumber, position); //position claw
+	set_servo_position(portNumber, position); //open claw and collect poms	
+	return 0; 
+}
+int go_to_beginning(int portNumber, double percentPower) {
+	printf("Going home! Goodbye!");
+	motor(portNumber, percentPower);
+	motor(portNumber, percentPower);
+	//if a turn is needed, one should be more powerful than the other
+	//add more functions if needed 
+	return 0;
+}
+*/
+
+int main() {
+    //wait_for_light(0);
+	shut_down_in(119);
+	turnLeft(900);
+	return 0;
+} 
