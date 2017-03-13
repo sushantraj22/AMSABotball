@@ -1,0 +1,64 @@
+//Patrick Tan and Chris Walsh
+//Create 2017
+
+#include <kipr/botball.h>
+void moveForward(double distance, int speed);
+void moveBackward(float distance, int speed);
+void turnLeft(double angle);
+void turnRight(double angle);
+void slideMoveUp();
+void sideStuff();
+
+int main()
+{    
+   //20 is about 21??? 1.03
+   create_connect();
+   moveForward(20,100);
+   create_stop();
+   return 0;
+}
+//moves forward... playing around with constants
+void moveForward(double distance, int speed){
+// this will work only for distance in centimeters and at 100 speed, this method is set up for the create
+    distance *= 8.3;
+    int time = (int)(1000*distance/speed);
+    create_drive_direct(speed, speed);
+    msleep(time);
+    create_stop();
+}
+//moves backward... playing around with constants
+void moveBackward(float distance, int speed){
+    // this will work only for distance in centimeters and at 100 speed, this method is set up for the create
+    distance *= 8.3;
+    int time = (int)(1000*distance/speed);
+    create_drive_direct(-speed, -speed);
+    msleep(time);
+}
+//turns left... playing around with constants
+void turnLeft(double angle){
+	set_create_total_angle(0);
+    while(1){
+        if(get_create_total_angle()< angle*.56){ //0.56 is just a multiplier, this can be adjusted if it appears to be 
+            									// inaccurate when testing, this value is experimentally determined.
+            create_drive_direct(-50,50);
+        }
+        else{
+            break;
+        }
+        msleep(10);
+        create_drive_direct(0,0);
+    }
+}
+//turns right... playing around with constants
+void turnRight(double angle){ // turns in place to the right. Essentially, this method has the create move little by little to the right, each time it moves, it checks if it has rotated enough to fulfill the given angle
+	set_create_total_angle(0);
+    while(1){
+        if(get_create_total_angle()< -angle*.58){ //0.58 is just a multiplier, this can be adjusted if it appears to be 
+            									// inaccurate when testing, this value is experimentally determined.
+            create_drive_direct(50,-50);
+        }
+        else{
+            break;
+        }
+    }
+}
