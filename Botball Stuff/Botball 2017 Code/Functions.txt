@@ -1,0 +1,22 @@
+/* Position and open/close claw functions
+Author: matti0cre */
+
+#include <kipr/botball.h>
+void positionClawAndOpen() {
+	emable_servos();
+	set_servo_position(2,150); 
+	//2 should be positioning servo, change if necessary
+	closeClaw();
+	disable_servos();
+}
+void closeClaw() {
+	enable_servos();
+	set_servo_position(0,1124);
+	openClaw();
+	disable_servos();
+	
+}
+void openClaw(){
+	enable_servos();
+	set_servo_position(0,1024);
+}
